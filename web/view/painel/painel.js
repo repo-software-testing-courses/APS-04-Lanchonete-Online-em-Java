@@ -352,3 +352,63 @@ function dadosDoLanche(){
     dados['ingredientes'] = ingredientes;
     return dados
 }
+
+function abrirLanchonete() {
+    requisicao("../../alterarStatusLanchonete", atualizarStatusLanchonete, JSON.stringify({status: "ABERTO"}));
+}
+
+function fecharLanchonete() {
+    requisicao("../../alterarStatusLanchonete", atualizarStatusLanchonete, JSON.stringify({status: "FECHADO"}));
+}
+
+function atualizarStatusLanchonete(response) {
+    const resposta = response.srcElement.responseText;
+    console.log("Resposta do servidor:", resposta);
+    
+    if (resposta === "erro" || resposta.includes("Status inválido")) {
+        console.error("Erro ao alterar status:", resposta);
+        return;
+    }
+
+    try {
+        const data = JSON.parse(resposta);
+        console.log("Dados parseados:", data);
+        
+        // Procura o elemento dentro do footer
+        const footer = document.querySelector(".footerPainel");
+        const statusElement = footer.querySelector(".legendStatus");
+        console.log("Elemento de status encontrado:", statusElement);
+        
+        if (statusElement) {
+            const novoTexto = data.status === "ABERTO" ? "Aberto agora!" : "Fechado agora!";
+            console.log("Atualizando texto para:", novoTexto);
+            
+            // Força a atualização do DOM
+            statusElement.innerHTML = novoTexto;
+            statusElement.style.display = 'none';
+            statusElement.offsetHeight; // Força um reflow
+            statusElement.style.display = '';
+            
+            // Atualiza também o outro elemento se existir
+            const outroStatus = document.querySelectorAll(".legendStatus");
+            outroStatus.forEach(el => {
+                if (el !== statusElement) {
+                    el.innerHTML = novoTexto;
+                }
+            });
+        } else {
+            console.error("Elemento .legendStatus não encontrado!");
+        }
+    } catch (e) {
+        console.error("Erro ao processar resposta:", e);
+    }
+}
+
+function verificarStatusLanchonete() {
+    requisicao("../../getStatusLanchonete", atualizarStatusLanchonete);
+}
+
+// Adicionar chamada para verificar status ao carregar a página
+document.addEventListener('DOMContentLoaded', function() {
+    verificarStatusLanchonete();
+})

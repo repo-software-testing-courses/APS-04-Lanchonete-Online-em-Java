@@ -1,8 +1,19 @@
 function loadData(){
-    requisicao("../../getLanchesCliente", getLanches);
-    requisicao("../../getBebidasCliente", getBebidas);
+    requisicao("../../getStatusLanchonete", verificarStatusAntesDeCarregar);
 }
 
+function verificarStatusAntesDeCarregar(response) {
+    if (response !== "erro") {
+        const data = JSON.parse(response);
+        if (data.status === "ABERTO") {
+            requisicao("../../getLanchesCliente", getLanches);
+            requisicao("../../getBebidasCliente", getBebidas);
+        } else {
+            alert("A lanchonete está fechada no momento. Por favor, tente novamente mais tarde.");
+            window.location.href = "../index.html";
+        }
+    }
+}
 
 function divConstructor(dados){
 

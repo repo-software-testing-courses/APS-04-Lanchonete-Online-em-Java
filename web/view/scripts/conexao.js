@@ -1,15 +1,19 @@
-
-function requisicao(caminho, funcaoResposta, dados = null){
+function requisicao(caminho, funcaoResposta, dados = null, metodo = 'POST'){
     try
     {   
         //Inicia o Objeto que faz o Request
         asyncRequest = new XMLHttpRequest();  
         asyncRequest.withCredentials = true;
         //prepara a requisição pro servlet com o Caminho dele e o tipo de Request
-        asyncRequest.open('POST', caminho, true);
+        asyncRequest.open(metodo, caminho, true);
         asyncRequest.withCredentials = true;
-        //Seta a função a ser chamada quando a comunicação for feita e a resposta chegar. A Função é passada
-        //Pelo parametro funcaoResposta
+        
+        // Adiciona headers necessários
+        if (dados) {
+            asyncRequest.setRequestHeader('Content-Type', 'application/json');
+        }
+        
+        //Seta a função a ser chamada quando a comunicação for feita e a resposta chegar
         asyncRequest.onload = funcaoResposta; 
 
         //Manda os dados, se ouver algum, ou Null se nada for especificado

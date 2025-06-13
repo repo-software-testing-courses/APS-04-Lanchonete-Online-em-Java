@@ -112,7 +112,7 @@ public class DaoFuncionario {
             } else { return false; }
             
         } catch(SQLException e){
-            JOptionPane.showMessageDialog(null, e);
+            System.err.println("Erro ao fazer login: " + e.getMessage());
         }
         
         return false;

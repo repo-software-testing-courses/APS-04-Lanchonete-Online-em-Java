@@ -1,8 +1,17 @@
-CREATE DATABASE lanchonete
-ENCODING = 'UTF-8'
-TEMPLATE template0
+-- Removendo a criação do banco, pois ele já é criado pelo docker-compose
+-- CREATE DATABASE lanchonete
+-- ENCODING = 'UTF-8'
+-- TEMPLATE template0
 
 ---------------------------------------------
+
+CREATE TABLE tb_status_lanchonete (
+    id_status SERIAL PRIMARY KEY,
+    status VARCHAR(20) NOT NULL,
+    data_alteracao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+INSERT INTO tb_status_lanchonete (status) VALUES ('FECHADO');
 
 CREATE TABLE tb_funcionarios(
 	id_funcionario	SERIAL,
@@ -114,3 +123,8 @@ CREATE TABLE tb_tokens(
 	token       TEXT CONSTRAINT tb_tokens_token_nn NOT NULL UNIQUE,
 	CONSTRAINT pk_tb_tokens_id_token PRIMARY KEY (id_token)
 );
+
+-- Usuário admin padrão
+-- senha: admin (hash MD5: 21232f297a57a5a743894a0e4a801fc3)
+INSERT INTO tb_funcionarios (nome, sobrenome, usuario, senha, cargo, salario, cad_por, fg_ativo)
+VALUES ('Admin', 'Master', 'admin', '21232f297a57a5a743894a0e4a801fc3', 'admin', 9999.99, NULL, 1);
