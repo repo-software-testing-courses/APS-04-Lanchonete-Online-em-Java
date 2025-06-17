@@ -11,7 +11,6 @@ function verificarStatusAntesDeCarregar(response) {
                 requisicao("../../getBebidasCliente", getBebidas);
             } else {
                 alert("A lanchonete está fechada no momento. Por favor, tente novamente mais tarde.");
-                window.location.href = "../index.html";
             }
         } catch (e) {
             console.error("Erro ao processar resposta:", e);

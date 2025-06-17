@@ -37,8 +37,16 @@ public class alterarStatusLanchonete extends HttpServlet {
                     out.flush();
                 }
             } else {
+                // Definir o status inicial como 'ABERTO' se o status for inválido
+                DaoStatusLanchonete dao = new DaoStatusLanchonete();
+                dao.alterarStatus("ABERTO");
+                
+                JSONObject jsonResponse = new JSONObject();
+                jsonResponse.put("status", "ABERTO");
+                
                 try (PrintWriter out = response.getWriter()) {
-                    out.println("Status inválido");
+                    out.print(jsonResponse.toString());
+                    out.flush();
                 }
             }
         } else {
