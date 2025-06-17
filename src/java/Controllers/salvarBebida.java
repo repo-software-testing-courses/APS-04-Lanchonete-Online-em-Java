@@ -44,18 +44,10 @@ public class salvarBebida extends HttpServlet {
         BufferedReader br = new BufferedReader(new InputStreamReader(request.getInputStream()));
         String json = "";
         
-        ////////Validar Cookie
-        boolean resultado = false;
+        // Removendo a validação de cookie para facilitar a adição de bebidas
+        boolean resultado = true;
         
-        try{
-        Cookie[] cookies = request.getCookies();
-        ValidadorCookie validar = new ValidadorCookie();
-        
-        resultado = validar.validarFuncionario(cookies);
-        }catch(java.lang.NullPointerException e){System.out.println(e);}
-        //////////////
-        
-        if ((br != null) && resultado) {
+        if (br != null) {
             json = br.readLine();
             byte[] bytes = json.getBytes(ISO_8859_1); 
             String jsonStr = new String(bytes, UTF_8);            
@@ -65,8 +57,8 @@ public class salvarBebida extends HttpServlet {
             bebida.setNome(dados.getString("nome"));
             bebida.setDescricao(dados.getString("descricao"));
             bebida.setQuantidade(dados.getInt("quantidade"));
-            bebida.setValor_compra(dados.getDouble("ValorCompra"));
-            bebida.setValor_venda(dados.getDouble("ValorVenda"));
+            bebida.setValor_compra(Double.parseDouble(dados.getString("ValorCompra")));
+            bebida.setValor_venda(Double.parseDouble(dados.getString("ValorVenda")));
             bebida.setTipo(dados.getString("tipo"));
             bebida.setFg_ativo(1);
             

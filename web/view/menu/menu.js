@@ -3,14 +3,19 @@ function loadData(){
 }
 
 function verificarStatusAntesDeCarregar(response) {
-    if (response !== "erro") {
-        const data = JSON.parse(response);
-        if (data.status === "ABERTO") {
-            requisicao("../../getLanchesCliente", getLanches);
-            requisicao("../../getBebidasCliente", getBebidas);
-        } else {
-            alert("A lanchonete está fechada no momento. Por favor, tente novamente mais tarde.");
-            window.location.href = "../index.html";
+    if (response.srcElement.responseText !== "erro") {
+        try {
+            const data = JSON.parse(response.srcElement.responseText);
+            if (data.status === "ABERTO") {
+                requisicao("../../getLanchesCliente", getLanches);
+                requisicao("../../getBebidasCliente", getBebidas);
+            } else {
+                alert("A lanchonete está fechada no momento. Por favor, tente novamente mais tarde.");
+                window.location.href = "../index.html";
+            }
+        } catch (e) {
+            console.error("Erro ao processar resposta:", e);
+            alert("Erro ao processar resposta do servidor. Tente novamente mais tarde.");
         }
     }
 }
