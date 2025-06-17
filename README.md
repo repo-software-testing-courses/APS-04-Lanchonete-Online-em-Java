@@ -22,3 +22,41 @@ Para a manipulação de Arquivos JSON dentro do Código Java, e de um Banco de D
 ![alt text](https://i.ibb.co/C6kMZLW/c1bad7f9-c79a-4516-9d08-bc2548ee9880.jpg)
 ![alt text](https://i.ibb.co/2321674/8a74fb26-1db0-49df-b2d7-2479d0567a4e.jpg)
 ![alt text](https://i.ibb.co/2YSbvGZ/8d3386e3-d13b-4a42-b389-151fbadb1d77.jpg)
+
+## Como rodar o projeto
+
+### Pré-requisitos
+- [Docker](https://www.docker.com/get-started) e [Docker Compose](https://docs.docker.com/compose/install/)
+- [Java 8+](https://adoptopenjdk.net/) e [Maven](https://maven.apache.org/)
+
+### Passos para executar
+
+1. **Clone o repositório:**
+
+   ```bash
+   git clone <url-do-repositorio>
+   cd APS-04-Lanchonete-Online-em-Java
+   ```
+
+2. **Suba os containers com Docker Compose:**
+
+   ```bash
+   docker-compose up --build -d
+   ```
+
+   Isso irá criar e iniciar os containers do banco de dados PostgreSQL e do servidor Tomcat com a aplicação.
+
+3. **Acesse a aplicação:**
+
+   - API: [http://localhost:8080](http://localhost:8080)
+
+4. **Para parar e remover tudo:**
+
+   ```bash
+   docker-compose down -v
+   ```
+
+### Observações
+- O banco de dados será inicializado automaticamente com as tabelas necessárias e o usuário de admin para login.
+- Caso precise alterar configurações, edite os arquivos `docker-compose.yml` ou `banco.sql`.
+- Se houver problemas de cache no navegador, utilize Ctrl+F5 ou limpe o cache manualmente.
