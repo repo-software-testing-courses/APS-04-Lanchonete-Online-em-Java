@@ -1,6 +1,7 @@
 package DAO;
 
 import Model.Cliente;
+import Model.Endereco;
 import org.junit.jupiter.api.*;
 
 import java.util.List;
@@ -17,14 +18,22 @@ public class DaoClienteTest {
     }
 
     @Test
-    void testSalvarCliente() throws Exception {
+    void testSalvarClienteComNovoEndereco() {
         Cliente cliente = new Cliente();
         cliente.setNome("João");
         cliente.setSobrenome("Silva");
-        cliente.setTelefone("999999999");
-        cliente.setUsuario("joao_teste");
-        cliente.setSenha("123");
+        cliente.setTelefone("11999999999");
+        cliente.setUsuario("joao_test");
+        cliente.setSenha("senha123");
         cliente.setFg_ativo(1);
+
+        Endereco endereco = new Endereco();
+        endereco.setRua("Rua Teste");
+        endereco.setBairro("Centro");
+        endereco.setNumero(100);
+        endereco.setCidade("São Paulo");
+        endereco.setEstado("SP");
+        cliente.setEndereco(endereco);
 
         assertDoesNotThrow(() -> daoCliente.salvar(cliente));
 
@@ -35,32 +44,71 @@ public class DaoClienteTest {
     }
 
     @Test
-    void testListarTodos() throws Exception {
+    void testSalvarClienteComEnderecoExistente() {
+        Cliente cliente = new Cliente();
+        cliente.setNome("Maria");
+        cliente.setSobrenome("Souza");
+        cliente.setTelefone("11988888888");
+        cliente.setUsuario("maria_test");
+        cliente.setSenha("senha123");
+        cliente.setFg_ativo(1);
+
+        Endereco endereco = new Endereco();
+        endereco.setRua("Rua Teste");
+        endereco.setBairro("Centro");
+        endereco.setNumero(100);
+        endereco.setCidade("São Paulo");
+        endereco.setEstado("SP");
+        cliente.setEndereco(endereco);
+
+        // Salva primeiro para existir
+        daoCliente.salvar(cliente);
+
+        // Salva novamente para entrar no else do salvar
+        assertDoesNotThrow(() -> daoCliente.salvar(cliente));
+    }
+
+    @Test
+    void testListarTodosClientes() {
         List<Cliente> clientes = daoCliente.listarTodos();
         assertNotNull(clientes);
         assertTrue(clientes.size() >= 0);
     }
 
     @Test
-    void testPesquisaPorUsuario() throws Exception {
+    void testPesquisaPorUsuarioExistente() {
         Cliente cliente = new Cliente();
-        cliente.setUsuario("joao_teste");
-
-        Cliente result = daoCliente.pesquisaPorUsuario(cliente);
-        assertNotNull(result);
-        assertEquals("joao_teste", result.getUsuario());
+        cliente.setUsuario("joao_test");
+        Cliente resultado = daoCliente.pesquisaPorUsuario(cliente);
+        assertEquals("joao_test", resultado.getUsuario());
     }
 
     @Test
-    void testPesquisaPorID() throws Exception {
-        // Primeiro insere um cliente para garantir ID conhecido
+    void testPesquisaPorUsuarioInexistente() {
         Cliente cliente = new Cliente();
-        cliente.setNome("Maria");
-        cliente.setSobrenome("Souza");
-        cliente.setTelefone("88888888");
-        cliente.setUsuario("maria_teste");
-        cliente.setSenha("123");
+        cliente.setUsuario("usuario_inexistente");
+        Cliente resultado = daoCliente.pesquisaPorUsuario(cliente);
+        assertNull(resultado.getUsuario());
+    }
+
+    @Test
+    void testPesquisaPorIDExistente() {
+        Cliente cliente = new Cliente();
+        cliente.setNome("Carlos");
+        cliente.setSobrenome("Almeida");
+        cliente.setTelefone("77777777");
+        cliente.setUsuario("carlos_test");
+        cliente.setSenha("senha123");
         cliente.setFg_ativo(1);
+
+        Endereco endereco = new Endereco();
+        endereco.setRua("Rua Teste");
+        endereco.setBairro("Centro");
+        endereco.setNumero(200);
+        endereco.setCidade("São Paulo");
+        endereco.setEstado("SP");
+        cliente.setEndereco(endereco);
+
         daoCliente.salvar(cliente);
 
         Cliente clienteInserido = daoCliente.pesquisaPorUsuario(cliente);
@@ -68,33 +116,59 @@ public class DaoClienteTest {
 
         Cliente clientePorID = daoCliente.pesquisaPorID(String.valueOf(clienteInserido.getId_cliente()));
         assertNotNull(clientePorID);
-        assertEquals("Maria", clientePorID.getNome());
+        assertEquals("Carlos", clientePorID.getNome());
     }
 
     @Test
-    void testLoginValido() throws Exception {
+    void testPesquisaPorIDInexistente() {
+        Cliente cliente = daoCliente.pesquisaPorID("-1");
+        assertNotNull(cliente);
+        assertEquals(0, cliente.getId_cliente()); // pois retorna new Cliente()
+    }
+
+    @Test
+    void testLoginValido() {
         Cliente cliente = new Cliente();
-        cliente.setNome("Carlos");
-        cliente.setSobrenome("Almeida");
-        cliente.setTelefone("77777777");
-        cliente.setUsuario("carlos_teste");
-        cliente.setSenha("123");
+        cliente.setNome("Pedro");
+        cliente.setSobrenome("Mendes");
+        cliente.setTelefone("66666666");
+        cliente.setUsuario("pedro_test");
+        cliente.setSenha("senha123");
         cliente.setFg_ativo(1);
+
+        Endereco endereco = new Endereco();
+        endereco.setRua("Rua Teste");
+        endereco.setBairro("Centro");
+        endereco.setNumero(300);
+        endereco.setCidade("São Paulo");
+        endereco.setEstado("SP");
+        cliente.setEndereco(endereco);
+
         daoCliente.salvar(cliente);
 
         Cliente loginCliente = new Cliente();
-        loginCliente.setUsuario("carlos_teste");
-        loginCliente.setSenha("123");
+        loginCliente.setUsuario("pedro_test");
+        loginCliente.setSenha("senha123");
 
         boolean result = daoCliente.login(loginCliente);
         assertTrue(result);
     }
 
     @Test
-    void testLoginInvalido() throws Exception {
+    void testLoginSenhaInvalida() {
         Cliente cliente = new Cliente();
-        cliente.setUsuario("nao_existe");
-        cliente.setSenha("senhaErrada");
+        cliente.setUsuario("joao_test");
+        cliente.setSenha("senha_errada");
+
+        boolean result = daoCliente.login(cliente);
+        assertFalse(result);
+    }
+
+    @Test
+    void testLoginUsuarioInexistente() {
+        Cliente cliente = new Cliente();
+        cliente.setUsuario("usuario_inexistente");
+        cliente.setSenha("qualquer");
 
         boolean result = daoCliente.login(cliente);
         assertFalse(result);
