@@ -18,7 +18,7 @@ public class DaoClienteTest {
     }
 
     @Test
-    void testSalvarClienteComNovoEndereco() {
+    void TestSalvarClienteComNovoEndereco() {
         Cliente cliente = new Cliente();
         cliente.setNome("João");
         cliente.setSobrenome("Silva");
@@ -44,7 +44,7 @@ public class DaoClienteTest {
     }
 
     @Test
-    void testSalvarClienteComEnderecoExistente() {
+    void TestSalvarClienteComEnderecoExistente() {
         Cliente cliente = new Cliente();
         cliente.setNome("Maria");
         cliente.setSobrenome("Souza");
@@ -69,14 +69,14 @@ public class DaoClienteTest {
     }
 
     @Test
-    void testListarTodosClientes() {
+    void TestListarTodosClientes() {
         List<Cliente> clientes = daoCliente.listarTodos();
         assertNotNull(clientes);
         assertTrue(clientes.size() >= 0);
     }
 
     @Test
-    void testPesquisaPorUsuarioExistente() {
+    void TestPesquisaPorUsuarioExistente() {
         Cliente cliente = new Cliente();
         cliente.setUsuario("joao_test");
         Cliente resultado = daoCliente.pesquisaPorUsuario(cliente);
@@ -84,7 +84,7 @@ public class DaoClienteTest {
     }
 
     @Test
-    void testPesquisaPorUsuarioInexistente() {
+    void TestPesquisaPorUsuarioInexistente() {
         Cliente cliente = new Cliente();
         cliente.setUsuario("usuario_inexistente");
         Cliente resultado = daoCliente.pesquisaPorUsuario(cliente);
@@ -92,7 +92,7 @@ public class DaoClienteTest {
     }
 
     @Test
-    void testPesquisaPorIDExistente() {
+    void TestPesquisaPorIDExistente() {
         Cliente cliente = new Cliente();
         cliente.setNome("Carlos");
         cliente.setSobrenome("Almeida");
@@ -120,14 +120,14 @@ public class DaoClienteTest {
     }
 
     @Test
-    void testPesquisaPorIDInexistente() {
+    void TestPesquisaPorIDInexistente() {
         Cliente cliente = daoCliente.pesquisaPorID("-1");
         assertNotNull(cliente);
         assertEquals(0, cliente.getId_cliente()); // pois retorna new Cliente()
     }
 
     @Test
-    void testLoginValido() {
+    void TestLoginValido() {
         Cliente cliente = new Cliente();
         cliente.setNome("Pedro");
         cliente.setSobrenome("Mendes");
@@ -155,7 +155,7 @@ public class DaoClienteTest {
     }
 
     @Test
-    void testLoginSenhaInvalida() {
+    void TestLoginSenhaInvalida() {
         Cliente cliente = new Cliente();
         cliente.setUsuario("joao_test");
         cliente.setSenha("senha_errada");
@@ -165,7 +165,7 @@ public class DaoClienteTest {
     }
 
     @Test
-    void testLoginUsuarioInexistente() {
+    void TestLoginUsuarioInexistente() {
         Cliente cliente = new Cliente();
         cliente.setUsuario("usuario_inexistente");
         cliente.setSenha("qualquer");
