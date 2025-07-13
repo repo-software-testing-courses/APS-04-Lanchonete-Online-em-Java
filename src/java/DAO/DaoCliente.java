@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class DaoCliente {
 
-    private Connection conecta;
+    Connection conecta;
     
     public DaoCliente(){
         this.conecta = new DaoUtil().conecta();
