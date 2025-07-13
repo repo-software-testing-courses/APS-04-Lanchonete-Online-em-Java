@@ -1,4 +1,4 @@
-package Testes.Unitários;
+package Testes.Integração;
 
 import java.lang.reflect.Field;
 import java.sql.Connection;
