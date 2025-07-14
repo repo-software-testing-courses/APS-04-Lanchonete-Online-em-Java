@@ -268,8 +268,6 @@ public class ClienteControllerTest {
 
         servlet.doPost(request, response);
 
-        // Verificações
-        // Verifica se o pedido foi salvo
         ArgumentCaptor<Pedido> pedidoCaptor = ArgumentCaptor.forClass(Pedido.class);
         verify(daoPedidoMock, times(1)).salvar(pedidoCaptor.capture());
 
@@ -278,7 +276,6 @@ public class ClienteControllerTest {
         assertEquals(clienteMock, pedidoSalvo.getCliente());
         assertEquals(35.00, pedidoSalvo.getValor_total()); // 2x15 + 1x5 = 35
 
-        // Verifica se os itens foram vinculados corretamente
         verify(daoPedidoMock, times(1)).vincularLanche(any(Pedido.class), any(Lanche.class));
         verify(daoPedidoMock, times(1)).vincularBebida(any(Pedido.class), any(Bebida.class));
 
