@@ -19,6 +19,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 public class ClienteControllerTest {
@@ -266,7 +267,7 @@ public class ClienteControllerTest {
             }
         };
 
-        servlet.doPost(request, response);
+        servlet.processarPedido(request, response);
 
         // Verificações
         // Verifica se o pedido foi salvo
@@ -322,7 +323,7 @@ public class ClienteControllerTest {
             }
         };
 
-        servlet.doPost(request, response);
+        servlet.processarPedido(request, response);
 
         printWriter.flush();
         String responseContent = stringWriter.toString();

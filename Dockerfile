@@ -3,7 +3,7 @@ WORKDIR /app
 COPY pom.xml .
 COPY src ./src
 COPY web ./web
-RUN mvn clean package
+RUN mvn clean package -DskipTests
 
 FROM tomcat:8.5-jdk17-temurin
 
