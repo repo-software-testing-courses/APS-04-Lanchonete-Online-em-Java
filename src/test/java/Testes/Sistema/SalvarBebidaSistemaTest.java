@@ -8,6 +8,7 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+
 import io.github.bonigarcia.wdm.WebDriverManager;
 
 class SalvarBebidaSistemaTest {
@@ -76,8 +77,8 @@ class SalvarBebidaSistemaTest {
         Thread.sleep(1000);
 
         // Preencher o formulário de login
-        driver.findElement(By.name("usuario")).sendKeys("admin");
-        driver.findElement(By.name("senha")).sendKeys("123");
+        driver.findElement(By.id("loginInput")).sendKeys("admin");
+        driver.findElement(By.id("senhaInput")).sendKeys("123");
         driver.findElement(By.xpath("//input[@type='submit']")).click();
 
         Thread.sleep(1000);
