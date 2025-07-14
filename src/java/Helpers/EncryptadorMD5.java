@@ -36,6 +36,13 @@ public class EncryptadorMD5 {
         return null;    
     } 
 
+    public boolean verificarSenha(String senha, String hashEsperado) {
+        String hashCalculado = encryptar(senha);
+        return hashCalculado != null && hashCalculado.equalsIgnoreCase(hashEsperado);
+    }
 
+    public boolean isHashMD5Valido(String hash) {
+        return hash != null && hash.matches("^[a-fA-F0-9]{32}$");
+    }
     
 }
