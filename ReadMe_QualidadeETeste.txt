@@ -4,4 +4,4 @@ Apresentação: www.canva.com/design/DAGtFCWyR3o/lcjF80iUKg-F6QW3eEDBXg/edit?utm
 
 
 Foi feita uma pequena alteração numa classe para lançar exceção ao invés de Null em caso de erro. 
-Essa classe se encontra em: target\classes\Helpers\EncryptadorMD5_to_be.java
+Essa classe se encontra em: src\java\Helpers\EncryptadorMD5_to_be.java
