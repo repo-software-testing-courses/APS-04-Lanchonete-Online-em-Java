@@ -55,7 +55,7 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <version>5.10.2</version>
+            <version>5.8.2</version>
             <scope>test</scope>
         </dependency>
 
@@ -63,19 +63,19 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>5.14.2</version>
+            <version>3.12.4</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>net.bytebuddy</groupId>
             <artifactId>byte-buddy</artifactId>
-            <version>1.15.0</version>
+            <version>1.11.13</version>
         </dependency>
 
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-junit-jupiter</artifactId>
-            <version>5.8.0</version>
+            <version>3.12.4</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -105,11 +105,6 @@
                     <webXml>web/WEB-INF/web.xml</webXml>
                     <failOnMissingWebXml>false</failOnMissingWebXml>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.tomcat.maven</groupId>
-                <artifactId>tomcat9-maven-plugin</artifactId>
-                <version>2.2</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -144,6 +139,47 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            <!-- Plugin PITest para teste de mutação -->
+            <plugin>
+                <groupId>org.pitest</groupId>
+                <artifactId>pitest-maven</artifactId>
+                <version>1.15.8</version>
+                <configuration>
+                    <targetClasses>
+                        <param>Controllers.*</param>
+                        <param>DAO.*</param>
+                        <param>Helpers.*</param>
+                        <param>Model.*</param>
+                    </targetClasses>
+                    <targetTests>
+                        <param>*Test</param>
+                    </targetTests>
+                    <threads>4</threads>
+                    <outputFormats>
+                        <outputFormat>HTML</outputFormat>
+                        <outputFormat>XML</outputFormat>
+                    </outputFormats>
+                    <timestampedReports>false</timestampedReports>
+                    <mutators>
+                        <mutator>DEFAULTS</mutator>
+                    </mutators>
+                    <jvmArgs>
+                        <jvmArg>-Xmx2048m</jvmArg>
+                    </jvmArgs>
+                    <failWhenNoMutations>false</failWhenNoMutations>
+                    <skipFailingTests>true</skipFailingTests>
+                    <mutationThreshold>0</mutationThreshold>
+                    <coverageThreshold>0</coverageThreshold>
+                    <includeJarFiles>true</includeJarFiles>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.pitest</groupId>
+                        <artifactId>pitest-junit5-plugin</artifactId>
+                        <version>1.2.1</version>
+                    </dependency>
+                </dependencies>
             </plugin>
         </plugins>
     </build>
