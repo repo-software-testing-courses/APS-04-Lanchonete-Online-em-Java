@@ -1,1 +1,1 @@
-ISO 25010: https://docs.google.com/document/d/1V9iEOINIou45t2_fYWKHtXyvHFiQIWbdP56F8-EKFaM/edit?tab=t.0
+ISO 25010: https://docs.google.com/document/d/150YBd9KHCjxVCDo0uLmm2s0dKvBKr9marKX2-KIz8o0/edit?tab=t.0
