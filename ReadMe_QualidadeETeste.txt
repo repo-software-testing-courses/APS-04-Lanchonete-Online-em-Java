@@ -1,0 +1,1 @@
+ISO 25010: https://docs.google.com/document/d/1V9iEOINIou45t2_fYWKHtXyvHFiQIWbdP56F8-EKFaM/edit?tab=t.0
