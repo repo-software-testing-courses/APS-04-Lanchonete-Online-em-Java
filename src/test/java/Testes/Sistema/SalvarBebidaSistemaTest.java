@@ -27,6 +27,36 @@ class SalvarBebidaSistemaTest {
         driver.quit();
     }
 
+    
+    // Método de login reutilizável dentro da própria classe
+    private void loginComoFuncionario() throws InterruptedException {
+        driver.get("http://localhost:8080/view/login/login.html");
+        Thread.sleep(1000);
+
+        // Verifica se está na tela de login
+        String tituloPagina = driver.getTitle();
+        if (!tituloPagina.contains("Login")) {
+            throw new IllegalStateException("Não está na tela de login.");
+        }
+
+        // Clica no link de login de funcionário
+        try {
+            WebElement linkFuncionario = driver.findElement(By.xpath("//a[contains(@href, 'login_Funcionario.html')]"));
+            linkFuncionario.click();
+        } catch (NoSuchElementException e) {
+            throw new RuntimeException("Link para login de funcionário não encontrado.");
+        }
+
+        Thread.sleep(1000);
+
+        // Preencher o formulário de login
+        driver.findElement(By.id("loginInput")).sendKeys("admin");
+        driver.findElement(By.id("senhaInput")).sendKeys("admin");
+        driver.findElement(By.xpath("//input[@type='submit']")).click();
+
+        Thread.sleep(1000);
+    }
+
     @Test
     void deveCadastrarBebida() throws InterruptedException {
         // Fazer login antes de tentar cadastrar a bebida
@@ -53,34 +83,5 @@ class SalvarBebidaSistemaTest {
         boolean estaVisivel = form.isDisplayed();
 
         assert !estaVisivel : "Erro: o formulário ainda está visível — talvez não salvou.";
-    }
-
-    // Método de login reutilizável dentro da própria classe
-    private void loginComoFuncionario() throws InterruptedException {
-        driver.get("http://localhost:8080/view/login/login.html");
-        Thread.sleep(1000);
-
-        // Verifica se está na tela de login
-        String tituloPagina = driver.getTitle();
-        if (!tituloPagina.contains("Login")) {
-            throw new IllegalStateException("Não está na tela de login.");
-        }
-
-        // Clica no link de login de funcionário
-        try {
-            WebElement linkFuncionario = driver.findElement(By.xpath("//a[contains(@href, 'login_Funcionario.html')]"));
-            linkFuncionario.click();
-        } catch (NoSuchElementException e) {
-            throw new RuntimeException("Link para login de funcionário não encontrado.");
-        }
-
-        Thread.sleep(1000);
-
-        // Preencher o formulário de login
-        driver.findElement(By.id("loginInput")).sendKeys("admin");
-        driver.findElement(By.id("senhaInput")).sendKeys("123");
-        driver.findElement(By.xpath("//input[@type='submit']")).click();
-
-        Thread.sleep(1000);
     }
 }
