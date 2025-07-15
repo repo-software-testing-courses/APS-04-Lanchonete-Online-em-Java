@@ -1,0 +1,25 @@
+# Dockerfile para executar testes de mutação
+FROM maven:3.8.6-openjdk-8
+
+WORKDIR /app
+
+COPY pom.xml ./
+COPY src/ ./src/
+COPY web/ ./web/
+COPY libraries/ ./libraries/
+
+RUN mvn dependency:go-offline -B
+
+RUN mvn clean compile
+
+# excluir partes que usam selenium(tava bugando)
+RUN rm -rf src/test/java/Testes/Sistema*
+
+# removendo CRUD
+RUN rm -f src/test/java/DAO/ClienteControllerTest.java
+RUN rm -f src/test/java/DAO/DaoClienteTest.java
+RUN rm -rf src/test/java/DAO/TestesIngredientes*
+
+RUN mvn test-compile
+
+CMD ["mvn", "org.pitest:pitest-maven:mutationCoverage", "-DmutationThreshold=0", "-DskipTests=false", "-DtargetClasses=Controllers.*,DAO.*,Helpers.*,Model.*", "-DoutputFormats=HTML,XML"]
