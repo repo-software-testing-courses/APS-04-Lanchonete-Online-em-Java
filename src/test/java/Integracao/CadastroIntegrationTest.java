@@ -1,19 +1,45 @@
 package Integracao;
 
-import org.junit.jupiter.api.*;
-import java.io.*;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.UUID;
 
-public class CadastroIntegrationTest {
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
+public class CadastroIntegrationTest {
     private static final String BASE_URL = "http://localhost:8080";
-    private static final String DB_URL = "jdbc:postgresql://localhost:5432/lanchonete";
+    
+    // Método para detectar configuração do banco
+    private static String getDatabaseUrl() {
+        String dockerHost = System.getenv("DB_HOST");
+        if (dockerHost != null) {
+            return "jdbc:postgresql://" + dockerHost + ":5432/lanchonete";
+        }
+        
+        // Verifica se está no container
+        try {
+            java.net.InetAddress.getByName("db");
+            return "jdbc:postgresql://db:5432/lanchonete";
+        } catch (java.net.UnknownHostException e) {
+            // Está no host local, usa porta mapeada
+            return "jdbc:postgresql://localhost:5433/lanchonete";
+        }
+    }
+    
+    private static final String DB_URL = getDatabaseUrl();
     private static final String DB_USER = "postgres";
-    private static final String DB_PASSWORD = "admin123";
+    private static final String DB_PASSWORD = "123456";
 
     @Test
     public void testCadastroClienteCompleto() throws IOException, SQLException {
