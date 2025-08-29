@@ -27,4 +27,21 @@ services:
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/lanchonete
       - SPRING_DATASOURCE_USERNAME=postgres
-      - SPRING_DATASOURCE_PASSWORD=postgres 
+      - SPRING_DATASOURCE_PASSWORD=postgres
+
+  tests:
+    image: maven:3.8.4-openjdk-8
+    working_dir: /app
+    volumes:
+      - ./:/app
+    depends_on:
+      db:
+        condition: service_healthy
+    # Instala o psql e roda o script de testes
+    command: /bin/bash -c "apt-get update && apt-get install -y postgresql-client && ./scripts/run_tests.sh"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/lanchonete
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+    ports:
+      - "5005:5005"
