@@ -79,7 +79,7 @@ public class cadastro extends HttpServlet {
             
             //E Para finalizar, salva no Banco usando o DAO deles
             cliente.setEndereco(endereco);
-            
+
             DaoCliente clienteDAO = new DaoCliente();
             clienteDAO.salvar(cliente);
             
@@ -119,7 +119,7 @@ public class cadastro extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
